@@ -1,0 +1,39 @@
+version: "3"
+services:
+  side_users_db:
+    container_name: side_users_db
+    image: "mysql:5.7"
+    environment:
+      - MYSQL_ROOT_PASSWORD=b1sm1llah
+      - MYSQL_ROOT_USER=side_users
+    volumes:
+      - $HOME/.mysql/side/users/db:/var/lib/mysql
+    ports:
+      - 32000:3306
+    restart: "no"
+    networks:
+      - side_default
+  side_users_service:
+    container_name: side_users_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9091:9091"
+    volumes:
+      - .:/users_service/
+    env_file:
+      - ./.env
+    links:
+      - "side_users_db:side_users_db"
+    depends_on:
+      - side_users_db
+    command: ["manage.py", "runserver"]
+    restart: "no"
+    networks:
+      - side_default
+volumes:
+  side_users_db:
+networks:
+  side_default:
+    external: true

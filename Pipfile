@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+PyJWT = "*"
+flask = "==1.1.1"
+flask-cors = "==3.0.8"
+flask-sqlalchemy = "*"
+flask-marshmallow = "==0.10.1"
+flask-jwt-extended = "==3.23.0"
+flask-script = "*"
+marshmallow-sqlalchemy = "==0.19.0"
+connexion = {extras = ["swagger-ui"],version = "*"}
+
+[dev-packages]
+ipython = "*"
+faker = "*"
+numpy = "*"
+bcrypt = "*"
+pymysql = "*"
+
+[requires]
+python_version = "3.7"
