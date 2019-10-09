@@ -20,6 +20,6 @@ export BACKEND_BASE_URL=api
 # flask db migrate
 # flask db upgrade
 
-python manage.py create_default_user
+# python manage.py create_default_user
 
-gunicorn app:instance
+gunicorn app:instance --bind 0.0.0.0:$PORT
