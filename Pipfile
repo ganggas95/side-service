@@ -22,8 +22,8 @@ bcrypt = "*"
 ipython = "*"
 faker = "*"
 numpy = "*"
-pymysql = "*"
 psycopg2 = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"

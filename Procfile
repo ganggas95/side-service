@@ -1,1 +1,1 @@
-release: ./wait-for-it.sh
+web: ./wait-for-it.sh

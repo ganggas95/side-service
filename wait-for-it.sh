@@ -22,4 +22,4 @@ flask db upgrade
 
 # python manage.py create_default_user
 
-python manage.py runserver
+gunicorn app:app
