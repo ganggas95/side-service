@@ -22,4 +22,4 @@ export BACKEND_BASE_URL=api
 
 # python manage.py create_default_user
 
-gunicorn app:instance --bind 0.0.0.0:$PORT
+gunicorn app:instance --bind $HOST:$PORT
