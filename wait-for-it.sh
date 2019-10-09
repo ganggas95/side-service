@@ -6,7 +6,7 @@ export HOST=0.0.0.0
 export PORT=9091
 export FLASK_APP=app
 export FLASK_DEBUG=1
-export DATABASE_URI=mysql+pymysql://root:b1sm1llah@side_users_db/side_users_db
+export DATABASE_URI=postgresql+psycopg2://hwpjqrrycaadqr:cca5058487d93272900e4f468902e0cec78ba7915e983737752a3e30241ea6fc@ec2-54-235-114-242.compute-1.amazonaws.com/d74e9hcikf56dg
 export BACKEND_BASE_URL=api
 
 until test -z "$(ps -A | grep mysqld)"; do

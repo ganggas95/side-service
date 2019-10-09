@@ -23,6 +23,7 @@ faker = "*"
 numpy = "*"
 bcrypt = "*"
 pymysql = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

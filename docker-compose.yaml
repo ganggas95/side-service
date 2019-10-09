@@ -2,18 +2,16 @@ version: "3"
 services:
   side_users_db:
     container_name: side_users_db
-    image: "mysql:5.7"
+    image: "postgres:10"
     environment:
-      - MYSQL_ROOT_PASSWORD=b1sm1llah
-      - MYSQL_ROOT_USER=root
-      - MYSQL_DATABASE=side_users_db
+      - POSTGRES_PASSWORD=b1sm1llah
+      - POSTGRES_USER=root
+      - POSTGRES_DB=side_db
     volumes:
-      - $HOME/.mysql/side/users/db:/var/lib/mysql
-      - ./db/init.sql:/data/side/init.sql
+      - $HOME/.pgsql/side/db:/var/lib/postgresql/data
     ports:
-      - 32000:3306
-    restart: "no"
-    command: mysqld --init-file="/data/side/init.sql"
+      - "5432:5432"
+    restart: "always"
     networks:
       - side_default
   side_users_service:
