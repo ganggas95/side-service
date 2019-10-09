@@ -1,0 +1,1 @@
+release: ./wait-for-it.sh
