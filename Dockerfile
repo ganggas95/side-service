@@ -6,11 +6,9 @@ COPY . /side_service
 
 WORKDIR /side_service
 
-COPY Pipfile ./
-COPY Pipfile.lock ./
+COPY requirements.txt ./
 
-RUN pip install pipenv
-RUN pipenv install --system --dev
+RUN pip install -r requirements.txt
 
 EXPOSE 9091
 
