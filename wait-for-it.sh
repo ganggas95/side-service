@@ -22,4 +22,9 @@ export BACKEND_BASE_URL=api
 
 # python manage.py create_default_user
 echo $HOST:$PORT
-gunicorn app:instance --bind $HOST:$PORT
+gunicorn --bind $HOST:$PORT app:instance \    
+    --workers 2 \
+    --timeout 300 \
+    --max-requests=2000 \
+    --keep-alive=2 \
+    --log-file=-
