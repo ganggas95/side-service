@@ -1,8 +1,20 @@
 from flask_script import Manager
-from factory import create_app
+from side_service import app
+from side_service.models.user import Users
 
-app = create_app(__name__).app
+
 manager = Manager(app=app)
+
+
+@manager.command
+def create_default_user():
+    username = "admin"
+    email = "admin@li.com"
+    password = "admin212"
+    user = Users.by_username(username)
+    if user is None:
+        user = Users(username, email, password)
+        user.save()
 
 
 @manager.command

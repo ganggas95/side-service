@@ -1,0 +1,157 @@
+migrations/
+migrations/*
+.vscode/
+.vscode/*
+.idea/*
+.idea/
+__pycache__/
+*.pyc
+
+SEND FEEDBACK
+Python
+Running the Python Bookshelf app on Google Kubernetes Engine
+This tutorial shows how to run the Python Bookshelf sample app on Google Kubernetes Engine (GKE). Follow this tutorial to containerize and deploy an existing Python web app to GKE. We recommend that you work through the Bookshelf app documentation as part of the tutorial for the App Engine standard environment.
+
+Objectives
+Create a GKE cluster.
+Containerize a Python app.
+Create a replicated frontend for the Bookshelf app.
+Create a replicated backend for the Bookshelf app.
+Create a load-balanced service to route HTTP traffic to the Bookshelf app frontend.
+Costs
+This tutorial uses the following billable components of Google Cloud Platform:
+
+GKE
+Compute Engine
+Cloud Storage
+Cloud Datastore
+Cloud Pub/Sub
+To generate a cost estimate based on your projected usage, use the pricing calculator. New GCP users might be eligible for a free trial.
+
+When you finish this tutorial, you can avoid continued billing by deleting the resources you created. For more information, see Cleaning up.
+
+Before you begin
+Select or create a GCP project.
+
+Note: If you don't plan to keep the resources that you create in this procedure, create a project instead of selecting an existing project. After you finish these steps, you can delete the project, removing all resources associated with the project.
+GO TO THE PROJECT SELECTOR PAGE
+
+Make sure that billing is enabled for your Google Cloud Platform project. Learn how to enable billing.
+
+Enable the Cloud Datastore, GKE, Cloud Storage, and Cloud Pub/Sub APIs.
+ENABLE THE APIS
+
+Install and initialize the Cloud SDK.
+Install Docker. Docker builds container images locally.
+Install kubectl.
+gcloud components install kubectl
+Creating a GKE cluster
+A GKE cluster is a managed set of Compute Engine virtual machines (VMs) that operate as a single GKE cluster. This tutorial needs a cluster with a minimum of two nodes, and these nodes need access to all Google APIs.
+
+Create the cluster. Replace [YOUR_GCP_ZONE] with the GCP zone where you want to host your cluster.
+
+gcloud container clusters create bookshelf \
+    --scopes "cloud-platform" \
+    --num-nodes 2 \
+    --enable-basic-auth \
+    --issue-client-certificate \
+    --enable-ip-alias \
+    --zone [YOUR_GCP_ZONE]
+Verify that you have access to the cluster. The following command lists the nodes in your container cluster and indicates that your container cluster is running and that you have access to it.
+
+kubectl get nodes
+You use the kubectl command to create resources in a GKE cluster. To learn more about kubectl, see GKE cluster operations. In general, you use gcloud to manage resources in your GCP project, and you use kubectl to manage resources in your GKE cluster. A single project can have multiple clusters, which lets you have clusters made up of different machine types to satisfy different needs.
+
+When you create a cluster with gcloud, authentication is set up automatically for kubectl. If you use the Google Cloud Platform Console to create clusters, you can set up authentication by using the gcloud container clusters get-credentials command.
+
+Cloning the sample app
+The sample app is available on GitHub at GoogleCloudPlatform/getting-started-python.
+
+Clone the repository:
+
+git clone https://github.com/GoogleCloudPlatform/getting-started-python.git
+Go to the sample directory:
+
+cd getting-started-python/optional-kubernetes-engine
+Initializing Cloud Datastore
+The Bookshelf app uses Cloud Datastore to store book data. To initialize Cloud Datastore in your project for the first time, complete the following steps:
+
+In the GCP Console, open the Datastore page.
+
+GO TO THE DATASTORE PAGE
+
+Select a region for your datastore.
+
+Click Continue until you reach the Create an Entity page, and then close the window. The Bookshelf app is ready to create entities in Cloud Datastore.
+
+Creating a Cloud Storage bucket
+The Bookshelf app uses Cloud Storage to store image files.
+
+The following instructions detail how to create a Cloud Storage bucket. Buckets are the basic containers that hold your data in Cloud Storage.
+
+Note: You can choose any name for your Cloud Storage bucket. It's a good practice to give your bucket the same name as your project ID. Bucket names must be unique across all of Google Cloud Platform (GCP), so it's possible that you can't use your project ID as the bucket name.
+In your terminal window, create a Cloud Storage bucket, where [YOUR_BUCKET_NAME] represents the name of your bucket:
+
+gsutil mb gs://[YOUR_BUCKET_NAME]
+To view uploaded images in the Bookshelf app, set the bucket's default access control list (ACL) to public-read:
+
+gsutil defacl set public-read gs://[YOUR_BUCKET_NAME]
+Configuring the app
+Open the config.py file for editing and replace the following values:
+
+Set the value of [PROJECT_ID] to your GCP project ID.
+
+Set the value of [CLOUD_STORAGE_BUCKET] to your Cloud Storage bucket name.
+
+Save and close the config.py file.
+
+Containerizing the app
+The sample app includes a Dockerfile, which is used to create the app's Docker image. This Docker image runs the app on GKE.
+
+optional-kubernetes-engine/DockerfileVIEW ON GITHUB
+# The Google App Engine python runtime is Debian Jessie with Python installed
+# and various os-level packages to allow installation of popular Python
+# libraries. The source is on github at:
+#   https://github.com/GoogleCloudPlatform/python-docker
+FROM gcr.io/google-appengine/python
+
+# Create a virtualenv for the application dependencies.
+# If you want to use Python 2, add the -p python2.7 flag.
+RUN virtualenv -p python3.4 /env
+
+# Set virtualenv environment variables. This is equivalent to running
+# source /env/bin/activate. This ensures the application is executed within
+# the context of the virtualenv and will have access to its dependencies.
+ENV VIRTUAL_ENV /env
+ENV PATH /env/bin:$PATH
+
+# Install dependencies.
+ADD requirements.txt /app/requirements.txt
+RUN pip install -r /app/requirements.txt
+
+# Add application code.
+ADD . /app
+
+# Instead of using gunicorn directly, we'll use Honcho. Honcho is a python port
+# of the Foreman process manager. $PROCESSES is set in the pod manifest
+# to control which processes Honcho will start.
+CMD honcho start -f /app/procfile $PROCESSES
+The sample app also includes a .dockerignore file that lists file paths that aren't included in the resulting Docker container. Typically, this file includes build artifacts and local dependency installations.
+optional-kubernetes-engine/.dockerignoreVIEW ON GITHUB
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+*.log
+.git

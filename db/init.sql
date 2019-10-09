@@ -1,0 +1,1 @@
+CREATE DATABASE side_users_db;

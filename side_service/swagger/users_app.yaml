@@ -1,0 +1,248 @@
+swagger: '2.0'
+info:
+  title: "List Users APIs"
+  description: "API ini digunakan untuk mengelola data users."
+  version: '{{api_version}}'
+basePath: '{{base_url}}'
+consumes:
+  - "application/json"
+schemes:
+  - http
+paths:
+  /list:
+    get:
+      tags:
+        - admin
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      operationId: side_service.api.users.search
+      summary: Returns a list of users.
+      description: Optional extended description in Markdown.
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Return a list of users
+          schema:
+            $ref: "#/definitions/ListUsersResponse"
+
+    post:
+      operationId: side_service.api.users.create_user
+      tags:
+        - admin
+      summary: Return object of created user.
+      description: This endpoint used to handle add user
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema: 
+            $ref: "#/definitions/NewUsers"
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        201:
+          description: Return object of created user.
+          schema:
+            $ref: "#/definitions/UserResponse"
+  
+  '/{username}/detail':
+    get:
+      tags:
+        - admin
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      operationId: side_service.api.users.detail_user
+      summary: Return object of user.
+      description: This endpoint used to handle get detail user
+      consumes:
+        - 'application/json'
+      responses:
+        200:
+          description: Return object of user.
+          schema:
+            $ref: "#/definitions/UserResponse"
+
+    put:
+      tags:
+        - admin
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Users'
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      operationId: side_service.api.users.update_user
+      summary: Return object of updated user.
+      description: This endpoint used to handle update detail user
+      consumes:
+        - 'application/json'
+      responses:
+        200:
+          description: Return object of updated user.
+          schema:
+            $ref: "#/definitions/UserResponse"
+    
+    delete:
+      tags:
+        - admin
+      parameters:
+        - name: username
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      operationId: side_service.api.users.delete_user
+      summary: Return id of deleted user.
+      description: This endpoint used to handle delete user
+      consumes:
+        - 'application/json'
+      responses:
+        200:
+          description: Return id of deleted user.
+          schema:
+            $ref: "#/definitions/DeleteUserResponse"
+
+  '/profile':
+    put:
+      tags:
+        - user
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Users'
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      operationId: side_service.api.users.update_profile
+      summary: Return object of updated password.
+      description: This endpoint used to handle update detail user
+      consumes:
+        - 'application/json'
+      responses:
+        200:
+          description: Return object of updated user.
+          schema:
+            $ref: "#/definitions/UserResponse"
+
+  '/password':
+    put:
+      tags:
+        - user
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UpdatePassword'
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Access Token>"
+      operationId: side_service.api.users.update_password
+      summary: Return object of updated password.
+      description: This endpoint used to handle update detail user
+      consumes:
+        - 'application/json'
+      responses:
+        200:
+          description: Return object of updated user.
+          schema:
+            $ref: "#/definitions/UserResponse"
+
+tags:
+  - name: user
+    description: "Operation available to current login user"
+  - name: public
+    description: "Operations available to public"
+  - name: admin
+    description: "Secured Admin-only calls"
+
+definitions:
+  Users:
+    type: object
+    properties:
+      id: { type: integer }
+      username: { type: string }
+      email: { type: string }
+  NewUsers:
+    type: object
+    properties:
+      id: { type: integer }
+      username: { type: string }
+      email: { type: string }
+      password: { type: string }
+      conf_password: { type: string }
+  UpdatePassword:
+    type: object
+    properties:
+      old_password: { type: string }
+      password: { type: string }
+      conf_password: { type: string }
+  ListUsersResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Users"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }
+  UserResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/Users"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }
+  DeleteUserResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          id: { type: integer }
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }

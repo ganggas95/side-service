@@ -1,4 +1,4 @@
-from settings.base import Base
+from side_service.settings.base import Base
 
 
 class Local(Base):

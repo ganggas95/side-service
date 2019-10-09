@@ -5,12 +5,15 @@ services:
     image: "mysql:5.7"
     environment:
       - MYSQL_ROOT_PASSWORD=b1sm1llah
-      - MYSQL_ROOT_USER=side_users
+      - MYSQL_ROOT_USER=root
+      - MYSQL_DATABASE=side_users_db
     volumes:
       - $HOME/.mysql/side/users/db:/var/lib/mysql
+      - ./db/init.sql:/data/side/init.sql
     ports:
       - 32000:3306
     restart: "no"
+    command: mysqld --init-file="/data/side/init.sql"
     networks:
       - side_default
   side_users_service:
@@ -28,7 +31,7 @@ services:
       - "side_users_db:side_users_db"
     depends_on:
       - side_users_db
-    command: ["manage.py", "runserver"]
+    command: ["./wait-for-it.sh"]
     restart: "no"
     networks:
       - side_default

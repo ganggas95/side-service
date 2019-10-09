@@ -1,0 +1,85 @@
+swagger: '2.0'
+info:
+  title: "List Users APIs"
+  description: "API ini digunakan untuk mengelola data users."
+  version: '{{api_version}}'
+basePath: '{{base_url}}'
+consumes:
+  - "application/json"
+schemes:
+  - http
+paths:
+  /login:
+    post:
+      tags:
+        - public
+      operationId: side_service.api.authentication.login
+      summary: Returns a access token and refresh token.
+      description: Optional extended description in Markdown.
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/LoginPayload"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Return a list of users
+          schema:
+            $ref: "#/definitions/AuthResponse"
+  '/refresh':
+    get:
+      tags:
+        - user
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
+          description: "Bearer <Refresh Token>"
+      operationId: side_service.api.authentication.refresh_token
+      summary: Return new token from given refresh token.
+      description: This endpoint used to handle get fresh token
+      consumes:
+        - 'application/json'
+      responses:
+        200:
+          description: Return object of updated user.
+          schema:
+            $ref: "#/definitions/AuthResponse"
+
+tags:
+  - name: user
+    description: "Operation available to current login user"
+  - name: public
+    description: "Operations available to public"
+  - name: admin
+    description: "Secured Admin-only calls"
+
+definitions:
+  TokenResponse:
+    type: object
+    properties:
+      access_token: { type: string }
+      refresh_token: { type: string }
+  LoginPayload:
+    type: object
+    properties:
+      username: { type: string }
+      password: { type: string }
+  RefreshTokenPayload:
+    type: object
+    properties:
+      refresh_token: { type: string }
+  AuthResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/TokenResponse"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }

@@ -3,10 +3,10 @@ import os
 
 
 class Base:
-    SECRET_KEY = "b1sm1llah1290323***&&&@^#*@**24"
+    SECRET_KEY = os.getenv("SECRET_KEY", "YjFzbTFsbGFoMTI5MDMyMyoqKiYmJkBeIypAKioyNAo=")
     HOST = os.getenv("HOST", "0.0.0.0")
     PORT = os.getenv("PORT", 9091)
-    SQLALCHEMY_DATABASE_URI = os.getenv("DB_URI")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_ECHO = True
     API_VERSION = os.getenv("API_VERSION", "v0.1")

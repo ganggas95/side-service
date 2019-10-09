@@ -1,0 +1,41 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: side-user-services
+  labels:
+    name: side-user-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: side-user-services
+  template:
+    metadata:
+      name: side-user-services
+      labels:
+        name: side-user-services
+    spec:
+      containers:
+        - name: side-user-services
+          image: gcr.io/side-user-service/side-user-service:v0.1
+          ports:
+            - containerPort: 9091
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          env_variables:
+            - FLASK_DEBUG: true
+            - DATABASE_URI : "mysql+pymysql://side_users:b1sm1llah@/side_users_db?unix-socket=/cloudsql/side-user-service:us-central1:side-users-db"
+            - PYTHONUNBUFFERED: 1
+            - ENV: 'production'
+            - HOST: '0.0.0.0'
+            - PORT: 9091
+            - BACKEND_BASE_API: 'api'
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: user-secret
+                  key: secret_token
