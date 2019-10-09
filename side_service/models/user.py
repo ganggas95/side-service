@@ -41,14 +41,14 @@ class Users(db.Model):
         ).first()
 
     def create_password(self, password: str):
-        self.password = hashpw(
-            hashed_password(password), gensalt()
-        )
+        self.password = str(hashpw(
+            password.encode('utf-8'), gensalt()
+        )).encode('utf-8')
     
     def check_password(self, password: str) -> bool:
         return checkpw(
-            hashed_password(password),
-            str(self.password).encode('utf-8')
+            password.encode('utf-8'),
+            self.password.encode('utf-8')
         )
 
     @property

@@ -14,7 +14,9 @@ def create_default_user():
     user = Users.by_username(username)
     if user is None:
         user = Users(username, email, password)
-        user.save()
+    else:
+        user.create_password(password)
+    user.save()
 
 
 @manager.command

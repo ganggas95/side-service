@@ -14,11 +14,11 @@ export BACKEND_BASE_URL=api
 
 # >&2 echo "MySQL is up - executing command"
 
-flask db init
-flask db migrate
-flask db upgrade
+# flask db init
+# flask db migrate
+# flask db upgrade
 
-python manage.py create_default_user
+# python manage.py create_default_user
 gunicorn --bind 0.0.0.0:$PORT app:instance \    
     --workers 2 \
     --timeout 300 \
