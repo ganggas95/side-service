@@ -3,7 +3,7 @@
 export PYTHONUNBUFFERED=1
 export ENV=local
 export HOST=0.0.0.0
-export PORT=9091
+export PORT=80
 export FLASK_APP=app
 export FLASK_DEBUG=1
 export DATABASE_URI=postgresql+psycopg2://hwpjqrrycaadqr:cca5058487d93272900e4f468902e0cec78ba7915e983737752a3e30241ea6fc@ec2-54-235-114-242.compute-1.amazonaws.com/d74e9hcikf56dg
