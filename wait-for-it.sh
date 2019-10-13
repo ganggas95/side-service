@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export PYTHONUNBUFFERED=1
-export ENV=local
+export ENV=production
 export FLASK_APP=app
 export FLASK_DEBUG=1
 export DATABASE_URI=postgresql+psycopg2://hwpjqrrycaadqr:cca5058487d93272900e4f468902e0cec78ba7915e983737752a3e30241ea6fc@ec2-54-235-114-242.compute-1.amazonaws.com:5432/d74e9hcikf56dg
