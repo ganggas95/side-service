@@ -40,6 +40,7 @@ def create_app():
             "base_url": f'{app.app.config["API_ROOT"]}/users',
             "host": app.app.config["HOST"],
             "port": app.app.config["PORT"],
+            "protocol": app.app.config["PROTOCOL"]
         }
     )
     app.add_api(
@@ -50,6 +51,7 @@ def create_app():
             "base_url": f"{app.app.config['API_ROOT']}/auth",
             "host": app.app.config["HOST"],
             "port": app.app.config["PORT"],
+            "protocol": app.app.config["PROTOCOL"]
         }
     )
     FlaskInjector(app=app.app, modules=[configure])
