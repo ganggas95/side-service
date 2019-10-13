@@ -7,7 +7,8 @@ basePath: '{{base_url}}'
 consumes:
   - "application/json"
 schemes:
-  - http
+  - {{protocol}}
+
 paths:
   /login:
     post:
