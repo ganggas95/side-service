@@ -12,6 +12,7 @@ flask-script
 marshmallow-sqlalchemy==0.19.0
 connexion[swagger-ui]
 bcrypt
+flask-bcrypt
 numpy
 psycopg2-binary
 # psycopg2

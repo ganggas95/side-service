@@ -15,7 +15,7 @@ def create_default_user():
     if user is None:
         user = Users(username, email, password)
     else:
-        user.create_password(password)
+        user.password = password
     user.save()
 
 

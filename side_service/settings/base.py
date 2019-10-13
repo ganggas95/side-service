@@ -9,6 +9,7 @@ class Base:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_ECHO = True
+    BCRYPT_LOG_ROUNDS = 15
     API_VERSION = os.getenv("API_VERSION", "v0.1")
     API_ROOT = f"/api/{API_VERSION}"
     JWT_TOKEN_LOCATION = "headers"

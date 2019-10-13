@@ -29,7 +29,7 @@ services:
       - "side_users_db:side_users_db"
     depends_on:
       - side_users_db
-    command: ["./wait-for-it.sh"]
+    entrypoint: ["python", "manage.py", "runserver"]
     restart: "no"
     networks:
       - side_default

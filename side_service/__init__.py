@@ -3,7 +3,7 @@ import connexion
 from connexion.resolver import RestyResolver
 from injector import Binder
 from flask_injector import FlaskInjector
-from side_service.extensions import ma, jwt, db, migrate, cors
+from side_service.extensions import ma, jwt, db, migrate, cors, bcrypt
 from side_service.settings import app_config
 from side_service.provider.user import UserProvider
 from side_service.models.user import Users
@@ -16,6 +16,7 @@ def init_extension(app):
     db.init_app(app)
     migrate.init_app(app, db)
     cors.init_app(app)
+    bcrypt.init_app(app)
     # schema.init_app(app)
 
 
