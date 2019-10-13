@@ -8,6 +8,7 @@ consumes:
   - "application/json"
 schemes:
   - {{protocol}}
+
 paths:
   /login:
     post:
