@@ -1,4 +1,4 @@
-from side_service.provider import Provider
+from side_service.provider.base_provider import Provider
 from side_service.serializers.user_serializers import UserSerializers
 from side_service.validators.user_validators import NewUserInputs
 from side_service.validators.user_validators import UpdateUserInputs
@@ -10,15 +10,15 @@ class UserProvider(Provider):
     user_serializer = UserSerializers()
 
     @staticmethod
-    def get_all():
+    def get_all() -> list:
         return Users.all()
-    
+
     @staticmethod
-    def get_by_username(username):
+    def get_by_username(username: str) -> Users:
         return Users.by_username(username)
 
     @staticmethod
-    def create_new(payload):
+    def create_new(payload) -> (Users, str):
         inputs = NewUserInputs(payload)
         if not inputs.validate():
             return None, inputs.errors
@@ -31,13 +31,19 @@ class UserProvider(Provider):
             return user, None
         return None, "Users is exist"
 
-    @staticmethod
-    def update_user(username, payload):
+    def update_user(self, username: str, payload) -> (Users, dict):
         inputs = UpdateUserInputs(payload)
         if not inputs.validate():
             return None, inputs.errors
         payload = payload.get_json(force=True)
-        user = Users.by_username(username)
+        user = self.get_by_username(username)
         user.from_payload(payload)
         user.update()
         return user, None
+
+    def delete_user(self, username: str) -> bool:
+        user = self.get_by_username(username)
+        if user:
+            return False
+        user.delete()
+        return True
