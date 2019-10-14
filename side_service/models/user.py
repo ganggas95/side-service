@@ -4,11 +4,11 @@ from flask_jwt_extended import create_refresh_token
 from sqlalchemy.ext.hybrid import hybrid_method
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from side_service import db
+from . import db, BaseModel
 from side_service.utils.passwd import hashed_password
 
 
-class Users(db.Model):
+class Users(db.Model, BaseModel):
     __tablename__ = "tb_users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -63,11 +63,3 @@ class Users(db.Model):
     @property
     def refresh_token(self):
         return create_refresh_token(identity=self.username)
-    
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.add(self)
-        db.session.commit()

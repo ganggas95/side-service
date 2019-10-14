@@ -17,3 +17,4 @@ numpy
 psycopg2-binary
 # psycopg2
 gunicorn
+pandas

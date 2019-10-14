@@ -1,7 +1,7 @@
-from side_service import db
+from . import db, BaseModel
 
 
-class Keluarga(db.Model):
+class Keluarga(db.Model, BaseModel):
     __tablename__ = 'tb_kk'
     id = db.Column(db.Integer, primary_key=True)
     no_kk = db.Column(db.String(100), unique=True)

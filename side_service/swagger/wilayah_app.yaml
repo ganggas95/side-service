@@ -1,0 +1,149 @@
+swagger: '2.0'
+info:
+  title: "List Wilayah APIs"
+  description: "API ini digunakan untuk mengambil data wilaya."
+  version: '{{api_version}}'
+basePath: '{{base_url}}'
+consumes:
+  - "application/json"
+schemes:
+  - {{protocol}}
+
+paths:
+  /{kode_kec}/desa:
+    get:
+      tags:
+        - public
+      operationId: side_service.api.wilayah.list_desa
+      summary: Returns a list_desa from given kode_kec (kode kecamatan).
+      description: Optional extended description in Markdown.
+      parameters:
+        - name: kode_kec
+          in: path
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Return a list of desa
+          schema:
+            $ref: "#/definitions/DesaResponse"
+  /{kode_kab}/kec:
+    get:
+      tags:
+        - public
+      operationId: side_service.api.wilayah.list_kec
+      summary: Returns a list of kecamatan from given kode_kab (kode kabupaten).
+      description: Optional extended description in Markdown.
+      parameters:
+        - name: kode_kab
+          in: path
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Return a list of desa
+          schema:
+            $ref: "#/definitions/KecResponse"
+  /{kode_prov}/kab:
+    get:
+      tags:
+        - public
+      operationId: side_service.api.wilayah.list_kab
+      summary: Returns a list of kabupaten from given kode_prov (kode provinsi).
+      description: Optional extended description in Markdown.
+      parameters:
+        - name: kode_prov
+          in: path
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Return a list of desa
+          schema:
+            $ref: "#/definitions/KabResponse"
+  /provinsi:
+    get:
+      tags:
+        - public
+      operationId: side_service.api.wilayah.list_prov
+      summary: Returns a list provinsi.
+      description: Optional extended description in Markdown.
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Return a list of desa
+          schema:
+            $ref: "#/definitions/ProvResponse"
+
+tags:
+  - name: public
+    description: "Operations available to public"
+
+definitions:
+  Desa:
+    type: object
+    properties:
+      name: { type: string }
+      kode_desa: { type: string }
+  Kec:
+    type: object
+    properties:
+      name: { type: string }
+      kode_kec: { type: string }
+  Kab:
+    type: object
+    properties:
+      name: { type: string }
+      kode_kab: { type: string }
+  Prov:
+    type: object
+    properties:
+      name: { type: string }
+      kode_prov: { type: string }
+  DesaResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/Desa"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }
+  KecResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/Kec"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }
+  KabResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/Kab"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }
+  ProvResponse:
+    type: object
+    properties:
+      data:
+        $ref: "#/definitions/Prov"
+      msg: { type: string }
+      errors: { type: object }
+      meta: { type: object }

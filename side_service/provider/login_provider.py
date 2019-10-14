@@ -1,6 +1,6 @@
 from flask import Request
 from flask_jwt_extended import get_jwt_identity
-from side_service.provider import Provider
+from side_service.provider.base_provider import Provider
 from side_service.serializers.login_serializers import LoginSerializers
 from side_service.models.user import Users
 

@@ -19,4 +19,5 @@ class Base:
     JWT_REFRESH_COOKIE_PATH = "{}{}".format(API_ROOT, '/auth/token/refresh')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
     CORS_HEADERS = 'Content-Type, Authorization, Accept'
+    FILE_IMPORT_FOLDER = os.path.join(os.getcwd(), "data_import")
     ORIGINS = "*"

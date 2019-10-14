@@ -1,7 +1,7 @@
-from side_service import db
+from . import db, BaseModel
 
 
-class Penduduk(db.Model):
+class Penduduk(db.Model, BaseModel):
     __tablename__ = 'tb_penduduk'
     id = db.Column(db.Integer, primary_key=True)
     nik = db.Column(db.String(16), unique=True)
